@@ -1,32 +1,48 @@
-import { View, Text, StyleSheet, Dimensions } from "react-native";
+import { StyleSheet } from "react-native";
+import Constants from 'expo-constants';
 
-const { width, height } = Dimensions.get('window'); // Obtém as dimensões da tela
+const statusBarHeight = Constants.statusBarHeight;
 
 const styles = StyleSheet.create({
     container: {
         display: 'flex',
         flex: 1,
-        backgroundColor: "#2C3137",
-        width: width, // Largura da tela
-        height: height, // Altura da tela
-        justifyContent: 'space-between',
-        alignItems: 'center'
+        justifyContent:"space-between",
     },
     text: {
         color: "#FFF",
         fontSize: 24,
-        marginTop: 10
+        fontWeight: 'bold'
     },
-    rowButton: {
-        display: 'flex',
+    hearder: {
+        marginTop: statusBarHeight + 24,
+        width: "100%",
+        flexDirection: "row",
+        justifyContent: "space-around",
+        alignItems: "center",
+    },conteinerButtons:{
         flexDirection: 'row',
-        gap: 8
+        flexWrap:'wrap',
+        justifyContent:'center',
+        gap: 12,
+        marginBottom: 20,
     },
-    containerButtons: {
-        alignItems: 'center',
-        justifyContent: 'flex-end',
-        gap: 8,
-        marginBottom: 20
+    button: {
+        borderRadius: 20,
+        width: 84,
+        height: 72,
+        justifyContent: "center",
+        alignItems: "center",
+    },
+    buttonText: {
+        fontSize: 32,
+        fontWeight: "bold",
+        textAlign: "center",
+    },
+    textResult: {
+        fontSize: 72,
+        textAlign: "right",
+        margin: 12
     }
 });
 

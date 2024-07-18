@@ -1,44 +1,87 @@
 import React from "react";
-import { View, Text, StyleSheet, Dimensions } from "react-native";
-import Botoes from '../components/botoes/Botoes';
+import { View, Text, TouchableOpacity, Button } from "react-native";
 import styles from './style'
+import { Entypo, AntDesign, Feather } from '@expo/vector-icons';
+import { useState } from 'react';
 
 export default function Index() {
+  const [blackTheme, setTheme] = useState(false);
+  const { bodyBlack, bodyWhite } = { bodyBlack: "#2C3137", bodyWhite: "#D3D3D3" };
+
+  const buttonsCalculator = ["CE",
+    <Feather name="delete" size={32} color="#F2724A" />,
+    "%", "/", 7, 8, 9, "x", 4, 5,
+    6, "-", 1, 2, 3, "+", 0, ",", "="
+  ];
+
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { backgroundColor: blackTheme ? bodyWhite : bodyBlack }]}>
+
+      {/* HEADER */}
+      <View style={styles.hearder}>
+
+        <AntDesign name="calculator" size={28} color={blackTheme ? bodyBlack : bodyWhite} />
+        <Text style={[styles.text, { color: blackTheme ? bodyBlack : bodyWhite }]}>Calculadora</Text>
+        <TouchableOpacity>
+          <Entypo name={blackTheme ? 'moon' : 'light-up'} size={28} color={blackTheme ? bodyBlack : bodyWhite} onPress={
+            () => blackTheme ? setTheme(false) : setTheme(true)
+          } />
+        </TouchableOpacity>
+      </View>
 
       <View>
-        <Text style={styles.text}>Calculadora</Text>
-      </View>
-      <View style={styles.containerButtons}>
-        <View style={styles.rowButton}>
-          <Botoes numero={"CE"} colorText={"#F2724A"} />
-          <Botoes numero={"Del"} colorText={"#F2724A"} />
-          <Botoes numero={"%"} colorText={"#F2724A"} />
-          <Botoes numero={"/"} colorText={"#F2724A"} />
+        {/* VIEW CALCULO */}
+        <View>
+          <Text style={[styles.textResult, {
+            color: blackTheme ? bodyBlack : bodyWhite
+          }]}>
+            2+4+5
+          </Text>
         </View>
-        <View style={styles.rowButton}>
-          <Botoes numero={"7"} />
-          <Botoes numero={"8"} />
-          <Botoes numero={"9"} />
-          <Botoes numero={"x"} colorText={"#F2724A"} />
-        </View>
-        <View style={styles.rowButton}>
-          <Botoes numero={"6"} />
-          <Botoes numero={"5"} />
-          <Botoes numero={"4"} />
-          <Botoes numero={"-"} colorText={"#F2724A"} />
-        </View>
-        <View style={styles.rowButton}>
-          <Botoes numero={"3"} />
-          <Botoes numero={"2"} />
-          <Botoes numero={"1"} />
-          <Botoes numero={"+"} colorText={"#F2724A"} />
-        </View>
-        <View style={styles.rowButton}>
-          <Botoes numero={"0"} />
-          <Botoes numero={","} />
-          <Botoes numero={"="} cor={"#F2724A"} />
+
+        {/* VIEW BUTTONS */}
+        <View style={styles.conteinerButtons}>
+          {buttonsCalculator.map((button) => (
+            button === "=" ? (
+              <TouchableOpacity
+                key={button + "key"}
+                style={[styles.button, { backgroundColor: "#F2724A" }]}
+              >
+                <Text
+                  style={[
+                    styles.buttonText,
+                    {
+                      color: isNaN(Number(button)) ? "#D3D3D3" : (blackTheme ? bodyBlack : bodyWhite)
+                    }
+                  ]}
+                >
+                  {button}
+                </Text>
+              </TouchableOpacity>
+            ) : (
+              <TouchableOpacity
+                key={button + "key"}
+                style={[
+                  styles.button,
+                  {
+                    backgroundColor: blackTheme ? "#EAEBEF" : "#6B6972",
+                    width: button === 0 ? 180 : 84
+                  }
+                ]}
+              >
+                <Text
+                  style={[
+                    styles.buttonText,
+                    {
+                      color: isNaN(Number(button)) ? "#F2724A" : (blackTheme ? bodyBlack : bodyWhite)
+                    }
+                  ]}
+                >
+                  {button}
+                </Text>
+              </TouchableOpacity>
+            )
+          ))}
         </View>
       </View>
 
