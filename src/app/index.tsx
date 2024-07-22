@@ -5,8 +5,39 @@ import { Entypo, AntDesign, Feather } from '@expo/vector-icons';
 import { useState } from 'react';
 
 export default function Index() {
+  const [displayResult, setdisplayResult] = useState("");
   const [blackTheme, setTheme] = useState(false);
   const { bodyBlack, bodyWhite } = { bodyBlack: "#2C3137", bodyWhite: "#D3D3D3" };
+
+  function clickButton(valor) {
+    if (valor === "CE") {
+      setdisplayResult("");
+      return;
+    }
+    if (valor === "=") {
+      try {
+        const expression = displayResult.replace(/x/g, '*').replace(/,/g, '.');
+        const result = eval(expression);
+        setdisplayResult(result.toString());
+      } catch (error) {
+        setdisplayResult("0");
+      }
+      return;
+    }
+    if (typeof (valor) === "object") {
+      setdisplayResult(displayResult.slice(0, -1));
+      return;
+    }
+    if (typeof (valor) === "string") {
+      const lastDigit = displayResult[displayResult.length - 1];
+      if (typeof lastDigit === "string" && isNaN(Number(lastDigit))) {
+        setdisplayResult(displayResult.slice(0, -1) + valor);
+        return;
+      }
+    }
+    setdisplayResult(displayResult + valor);
+  }
+
 
   const buttonsCalculator = ["CE",
     <Feather name="delete" size={32} color="#F2724A" />,
@@ -35,7 +66,7 @@ export default function Index() {
           <Text style={[styles.textResult, {
             color: blackTheme ? bodyBlack : bodyWhite
           }]}>
-            2+4+5
+            {displayResult}
           </Text>
         </View>
 
@@ -43,7 +74,7 @@ export default function Index() {
         <View style={styles.conteinerButtons}>
           {buttonsCalculator.map((button) => (
             button === "=" ? (
-              <TouchableOpacity
+              <TouchableOpacity onPress={() => clickButton(button)}
                 key={button + "key"}
                 style={[styles.button, { backgroundColor: "#F2724A" }]}
               >
@@ -59,7 +90,7 @@ export default function Index() {
                 </Text>
               </TouchableOpacity>
             ) : (
-              <TouchableOpacity
+              <TouchableOpacity onPress={() => clickButton(button)}
                 key={button + "key"}
                 style={[
                   styles.button,
